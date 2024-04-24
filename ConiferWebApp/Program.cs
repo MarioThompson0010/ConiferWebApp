@@ -19,7 +19,7 @@ builder.Services.AddHttpClient<IRegion, Region>("myapi", c =>
     c.Timeout = TimeSpan.FromMinutes(10);
 });
 
-builder.Services.AddSingleton<MyRegion>();
+builder.Services.AddScoped<IRegion, Region>();
 //builder.Services.AddSyncfusionBlazor();
 //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense();
 /////////////////////////////////////////////////////   /
