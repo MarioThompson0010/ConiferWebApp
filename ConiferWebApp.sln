@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConiferWebApp", "ConiferWeb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConiferWebApp.Client", "ConiferWebApp.Client\ConiferWebApp.Client.csproj", "{05778E47-C614-4C6E-9687-96A1D854CBDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelsProject", "..\ModelsProject\ModelsProject.csproj", "{83DBF083-0D7E-4906-9BB9-DD1A52667381}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{05778E47-C614-4C6E-9687-96A1D854CBDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05778E47-C614-4C6E-9687-96A1D854CBDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05778E47-C614-4C6E-9687-96A1D854CBDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83DBF083-0D7E-4906-9BB9-DD1A52667381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83DBF083-0D7E-4906-9BB9-DD1A52667381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83DBF083-0D7E-4906-9BB9-DD1A52667381}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83DBF083-0D7E-4906-9BB9-DD1A52667381}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

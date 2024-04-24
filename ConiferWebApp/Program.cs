@@ -1,5 +1,8 @@
 using ConiferWebApp.Client.Pages;
 using ConiferWebApp.Components;
+using ConiferWebApp.Services;
+using ModelsProject;
+using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +10,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+
+//////////////////////
+builder.Services.AddHttpClient<IRegion, Region>("myapi", c =>
+{
+    c.BaseAddress = new Uri(builder.Configuration.GetConnectionString("LocalHostURI"));
+    c.Timeout = TimeSpan.FromMinutes(10);
+});
+
+builder.Services.AddSingleton<MyRegion>();
+//builder.Services.AddSyncfusionBlazor();
+//Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense();
+/////////////////////////////////////////////////////   /
 
 var app = builder.Build();
 

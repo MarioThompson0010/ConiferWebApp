@@ -1,0 +1,87 @@
+﻿@page "/RegionsComponent"
+
+@using ModelsProject;
+@using System.ComponentModel.DataAnnotations
+@* @using BlazorApp1.Models.Clients *@
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.Components.Web;
+@using System.Text.Json
+@using System.Text.RegularExpressions
+@using Newtonsoft.Json
+@* @using Syncfusion.Blazor.DropDowns *@
+
+@* @using BlazorApp1.Components.Account
+@using BlazorApp1.Components.Account.Pages
+@using BlazorApp1.Components.Pages
+ *@
+@* @using BlazorApp1.Data
+@using BlazorApp1.Services
+ *@
+ @rendermode InteractiveServer
+
+
+
+@* @inject SignInManager<ApplicationUser> SignInManager *@
+@* @inject ILogger<Login> Logger *@
+@inject NavigationManager NavigationManager
+@* @inject IdentityRedirectManager RedirectManager *@
+@attribute [StreamRendering]
+
+
+<h3>Select your region</h3>
+@if (this.Regions != null)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <select class="form-control" onchange="@RegionClicked">
+                <option value="">
+                    Select a region
+                </option>
+                @foreach(var region in this.Regions)
+                {
+                    <option value="@region.Id">
+                        @region.Name
+                    </option>
+                }
+            </select>
+        </div>
+
+    </div>
+    <div class="d-flex gap-2 mb-4">
+        
+    </div>
+}
+@code {
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [CascadingParameter]
+    private List<MyRegion> Regions { get; set; } = new();
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // read region file
+        this.Regions = this.UseFileOpenReadTextWithSystemTextJson();
+        await base.OnInitializedAsync();
+    }
+
+    private List<MyRegion> UseFileOpenReadTextWithSystemTextJson()
+    {
+        var json = File.ReadAllText("Components/Pages/regions.json");
+        List<MyRegion> regions = JsonConvert.DeserializeObject<List<MyRegion>>(json);
+
+        return regions;
+    }
+
+    private void RegionClicked()
+    {
+        
+    }
+
+}
