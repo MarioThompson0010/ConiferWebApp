@@ -29,7 +29,7 @@
     <div class="row">
         <div class="col-md-4">
             <select class="form-control" onchange="@RegionClicked">
-                <option value="">
+                <option value="Select a region">
                     Select a region
                 </option>
                 @foreach (var region in this.RegionsAndStateAbbreviations)
@@ -120,15 +120,18 @@
     private  void RegionClicked( ChangeEventArgs args )
     {
 
-
+        this.statesSelected = args.Value.ToString();
 
 
     }
     private async void  HandleAlerts(MouseEventArgs e)
     {
-        await this.GetZonesService.GetZones();
-        
-        NavigationManager.NavigateTo("");
+        if (this.statesSelected != "Select a region")
+        {
+            // await this.GetZonesService.GetZones();
+
+            NavigationManager.NavigateTo($"AlertsComponent?StatesPassed={this.statesSelected}");
+        }
     }
 
     private sealed class StateAbbreviationLinq

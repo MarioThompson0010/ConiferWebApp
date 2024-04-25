@@ -1,0 +1,170 @@
+﻿@page "/AlertsComponent"
+
+@using ConiferWebApp.Services
+@using ModelsProject;
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.Components.Web;
+@using System.Text.Json
+@using System.Text.RegularExpressions
+@using Newtonsoft.Json
+
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
+
+@attribute [StreamRendering]
+
+<h3>Alerts Component</h3>
+@if (this.StateWithCities != null)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <select class="form-control" onchange="@StateClicked">
+                <option value="Select a state">
+                    Select a state
+                </option>
+                @foreach (var state in this.StateWithCities)
+                {
+
+                    <option id="@state.State" value="@state.State">
+                        @state.State @state.YesOrNo
+                    </option>
+                }
+            </select>
+        </div>
+
+    </div>
+}
+<p></p>
+@if (this.CitiesWithZones != null)
+{
+    <div class="row">
+        <div class="col-md-4">
+            @foreach (var zone in this.CitiesWithZones)
+            {
+                <p>
+                    <button class="btn btn-primary" @onclick="SelectedZone">
+                        @zone.City @zone.Zone
+                    </button>
+                </p>
+            }
+
+        </div>
+
+    </div>
+}
+
+@code {
+
+    [Inject]
+    public IRegion? GetRegionsService { get; set; }
+
+    [Inject]
+    public IState? GetStatesService { get; set; }
+
+
+    [Inject]
+    public IZone? GetZonesService { get; set; }
+
+    private List<MyRegion> Regions { get; set; } = new();
+
+    private List<MyState> States { get; set; } = new();
+
+    private List<MyZone> Zones { get; set; } = new();
+
+    private List<MyZone> DisplayZones { get; set; } = new();
+
+    private List<MyState> SelectedStates { get; set; } = new();
+
+    private List<StateWithCity> StateWithCities { get; set; } = new();
+    private List<CityAndZone> CitiesWithZones { get; set; } = new();
+    private string? stateSelected { get; set; } = "";
+
+    [SupplyParameterFromQuery]
+    private string? StatesPassed { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var gotstates = Regex.Split(this.StatesPassed, $",").ToList();
+        gotstates.ForEach(fe => fe = fe.Trim());
+        this.States = this.GetStatesService.GetStates().Result;
+        this.Zones = this.GetZonesService.GetZonesAlreadyInjected().Result;
+
+        foreach (var st in gotstates)
+        {
+            string foundcity = "Found City: ";
+            StateWithCity stateWithCity = new StateWithCity();
+            var statename = this.States.FirstOrDefault(w => w.Abbreviation.Trim() == st.Trim());
+            if (statename != null)
+            {
+                // found
+                stateWithCity.State = statename.Name;
+                var foundCity = this.Zones.FirstOrDefault(fd => fd.StateAbbreviation.ToUpper() == statename.Abbreviation.ToUpper());
+                if (foundCity != null)
+                {
+                    foundcity += "yes";
+                }
+                else
+                {
+                    foundcity += "no";
+                }
+
+                stateWithCity.YesOrNo = foundcity;
+                this.StateWithCities.Add(stateWithCity);
+            }
+        }
+
+    }
+
+    private void StateClicked(ChangeEventArgs args)
+    {
+        this.stateSelected = args.Value.ToString();
+        var foundZones = this.Zones.Where(w => w.State.Trim().ToUpper() == stateSelected.Trim().ToUpper())?.ToList();
+
+        if (foundZones != null && foundZones.Count > 0)
+        {
+            var groupedByCity = foundZones.GroupBy(gb => gb.City).ToList();
+            if (groupedByCity.Count > 0)
+            {
+                foreach (var city in groupedByCity)
+                {
+                    var gotcity = city.Key;
+                    if (gotcity != null)
+                    {
+                        CityAndZone cityAndZone = new CityAndZone();
+                        foreach (var zone in city)
+                        {
+                            cityAndZone.City = gotcity;
+                            cityAndZone.Zone = zone.Zone;
+                            this.CitiesWithZones.Add(cityAndZone);
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void SelectedZone(MouseEventArgs e)
+    {
+        if (this.stateSelected != "Select a state")
+        {
+            // call API
+        }
+    }
+
+    private sealed class StateWithCity
+    {
+        public string State { get; set; }
+        public string YesOrNo { get; set; } // does it have a city record?
+    }
+
+    private sealed class CityAndZone
+    {
+        public string City { get; set; }
+        public string Zone { get; set; } // does it have a city record?
+    }
+}

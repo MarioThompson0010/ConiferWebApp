@@ -21,7 +21,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<IRegion, Region>();
 builder.Services.AddSingleton<IState, State>();
-//builder.Services.AddSingleton<ListRegion>();
 builder.Services.AddSingleton<IZone, Zone>();
 builder.Services.AddDbContext<ApplicationDbContext>(
     //options =>
