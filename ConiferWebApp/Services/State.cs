@@ -1,22 +1,22 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using ModelsProject;
+﻿using ModelsProject;
 using Newtonsoft.Json;
 
 namespace ConiferWebApp.Services
 {
-    public class Region : IRegion
+    public class State : IState
     {
         private readonly HttpClient _httpClient;
-        public List<MyRegion> Regions { get; set; }
-        public Region(HttpClient httpClient)
+
+        public List<MyState> States { get; set; }
+        public State(HttpClient httpClient)
         {
             this._httpClient = httpClient;
-            this.Regions = FileOpenRegions();// new List<MyRegion>();
+            this.States = this.FileOpenStates();// new List<MyState>();
         }
 
-        public async Task<List<MyRegion>> GetRegions()
+        public async Task<List<MyState>> GetStates()
         {
-             return this.Regions;
+            return this.States;
             //GetClientSp getClientSp = new GetClientSp() { Email = email };
             //var response = await _httpClient.PostAsJsonAsync<GetClientSp>($"api/GetClient", getClientSp);
             //MyClient myClient = new MyClient();
@@ -35,14 +35,12 @@ namespace ConiferWebApp.Services
             //return null;
         }
 
-        private List<MyRegion> FileOpenRegions()
+        private List<MyState> FileOpenStates()
         {
-            var json = File.ReadAllText("Components/Pages/regions.json");
-            List<MyRegion> regions = JsonConvert.DeserializeObject<List<MyRegion>>(json);
+            var json = File.ReadAllText("Components/Pages/states.json");
+            List<MyState> states = JsonConvert.DeserializeObject<List<MyState>>(json);
 
-
-
-            return regions;
+            return states;
         }
 
     }

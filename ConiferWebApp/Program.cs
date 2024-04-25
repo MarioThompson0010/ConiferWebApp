@@ -1,6 +1,9 @@
 using ConiferWebApp.Client.Pages;
 using ConiferWebApp.Components;
+using ConiferWebApp.Data;
+using ConiferWebApp.Repository;
 using ConiferWebApp.Services;
+using Microsoft.Extensions.Options;
 using ModelsProject;
 using Syncfusion.Blazor;
 
@@ -13,15 +16,41 @@ builder.Services.AddRazorComponents()
 
 
 //////////////////////
-builder.Services.AddHttpClient<IRegion, Region>("myapi", c =>
+builder.Services.AddScoped<IZoneRepository, ZoneRepository>();
+builder.Services.AddControllers();
+
+builder.Services.AddSingleton<IRegion, Region>();
+builder.Services.AddSingleton<IState, State>();
+//builder.Services.AddSingleton<ListRegion>();
+builder.Services.AddSingleton<IZone, Zone>();
+builder.Services.AddDbContext<ApplicationDbContext>(
+    //options =>
+
+
+    //options.UseSqlServer("")
+    //normally set the connection string here
+    ); ;
+
+builder.Services.AddHttpClient<IZone, Zone>("myapi", c =>
 {
     c.BaseAddress = new Uri(builder.Configuration.GetConnectionString("LocalHostURI"));
     c.Timeout = TimeSpan.FromMinutes(10);
 });
 
-builder.Services.AddScoped<IRegion, Region>();
-//builder.Services.AddSyncfusionBlazor();
-//Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense();
+builder.Services.AddHttpClient<IRegion, Region>("myapireg", c =>
+{
+    c.BaseAddress = new Uri(builder.Configuration.GetConnectionString("LocalHostURI"));
+    c.Timeout = TimeSpan.FromMinutes(10);
+});
+
+builder.Services.AddHttpClient<IState, State>("myapist", c =>
+{
+    c.BaseAddress = new Uri(builder.Configuration.GetConnectionString("LocalHostURI"));
+    c.Timeout = TimeSpan.FromMinutes(10);
+});
+
+
+
 /////////////////////////////////////////////////////   /
 
 var app = builder.Build();
@@ -48,4 +77,10 @@ app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(ConiferWebApp.Client._Imports).Assembly);
 
+////////////////////////
+app.MapControllers();
+/////////////////////////////////////////////////////
+
 app.Run();
+
+

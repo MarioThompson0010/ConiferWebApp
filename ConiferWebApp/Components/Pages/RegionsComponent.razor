@@ -51,6 +51,7 @@
         </div>
 
     </div>
+    <p></p>
     <div class="row">
         <div class="col-md-4">
             <button type="button" class="w-100 btn btn-lg btn-danger" @onclick="HandleAlerts">
@@ -64,15 +65,25 @@
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
-    [CascadingParameter]
+
     private List<MyRegion> Regions { get; set; } = new();
 
-    [CascadingParameter]
+
     private List<MyState> States { get; set; } = new();
 
 
     [Inject]
     public IRegion? GetRegionsService { get; set; }
+
+    [Inject]
+    public IState? GetStatesService { get; set; }
+
+
+    [Inject]
+    public IZone? GetZonesService { get; set; }
+
+    // [Inject]
+    // public IZone? GetZonesService { get; set; }
 
 
     List<StateAbbreviationLinq> RegionsAndStateAbbreviations { get; set; } = new();
@@ -81,25 +92,14 @@
     protected override async Task OnInitializedAsync()
     {
         // read region file
-        this.Regions = this.FileOpenRegions();
-        this.States = this.FileOpenStates();
+        this.Regions =  this.GetRegionsService.GetRegions().Result;// this.FileOpenRegions();
+        this.States = this.GetStatesService.GetStates().Result;// this.FileOpenStates();
 
         var stateabbr =
            (from reg in this.Regions
             join sta in this.States on reg.Id equals sta.RegionId into regstates
             group regstates by reg.Name into regionGrouped
             select regionGrouped).ToList();
-        // select new StateAbbreviationLinq
-        // {
-        //     Abbrev = regstates1.
-
-        // }).ToList();
-        // select new StateAbbreviationLinq
-        //     {
-        //         RegionName = regionGrouped.,
-        //         Abbrev = regionGrouped.Abbreviation
-        //     }).ToList()
-        // group sta.RegionId).ToList();
 
         foreach (var key in stateabbr)
         {
@@ -108,7 +108,7 @@
             gotRegionsAndStates.RegionName = key.Key;
             var abbreviations = key.FirstOrDefault();
             List<string> statesabbrevs = new List<string>();
-            // var temp = key.Where(w => w.All(a => a.RegionId == region))
+
             foreach (var abbrev in abbreviations)
             {
                 statesabbrevs.Add(abbrev.Abbreviation);
@@ -124,37 +124,35 @@
         await base.OnInitializedAsync();
     }
 
-    private List<MyRegion> FileOpenRegions()
-    {
-        var json = File.ReadAllText("Components/Pages/regions.json");
-        List<MyRegion> regions = JsonConvert.DeserializeObject<List<MyRegion>>(json);
+    // private List<MyRegion> FileOpenRegions()
+    // {
+    //     var json = File.ReadAllText("Components/Pages/regions.json");
+    //     List<MyRegion> regions = JsonConvert.DeserializeObject<List<MyRegion>>(json);
 
 
 
-        return regions;
-    }
+    //     return regions;
+    // }
 
-    private List<MyState> FileOpenStates()
-    {
-        var json = File.ReadAllText("Components/Pages/states.json");
-        List<MyState> states = JsonConvert.DeserializeObject<List<MyState>>(json);
+    // private List<MyState> FileOpenStates()
+    // {
+    //     var json = File.ReadAllText("Components/Pages/states.json");
+    //     List<MyState> states = JsonConvert.DeserializeObject<List<MyState>>(json);
 
-        return states;
-    }
+    //     return states;
+    // }
 
     private void RegionClicked()
     {
 
 
-        // foreach(var in stateabbr)
-        // {
 
-        // }
 
     }
-    private void HandleAlerts(MouseEventArgs e)
+    private async void  HandleAlerts(MouseEventArgs e)
     {
-        // throw new NotImplementedException();
+        await this.GetZonesService.GetZones();
+        
         NavigationManager.NavigateTo("");
     }
 
