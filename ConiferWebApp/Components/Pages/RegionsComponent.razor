@@ -73,9 +73,9 @@
     [Inject]
     public IZone? GetZonesService { get; set; }
 
-    private string statesSelected { get; set; }
+    private string statesSelected { get; set; } = "";
 
-    
+
 
     List<StateAbbreviationLinq> RegionsAndStateAbbreviations { get; set; } = new();
 
@@ -117,6 +117,7 @@
 
     private  void RegionClicked( ChangeEventArgs args )
     {
+        this.statesSelected = "";
 
         this.statesSelected = args.Value.ToString();
 
@@ -124,7 +125,7 @@
     }
     private async void  HandleAlerts(MouseEventArgs e)
     {
-        if (this.statesSelected != "Select a region")
+        if (this.statesSelected != null && this.statesSelected != "" && this.statesSelected != "Select a region")
         {
             // A call to the server was already made
             
