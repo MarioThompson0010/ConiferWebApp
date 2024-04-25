@@ -5,7 +5,6 @@ using ConiferWebApp.Repository;
 using ConiferWebApp.Services;
 using Microsoft.Extensions.Options;
 using ModelsProject;
-using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 

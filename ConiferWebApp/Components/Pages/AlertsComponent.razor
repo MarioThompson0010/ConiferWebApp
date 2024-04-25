@@ -91,6 +91,7 @@
             <InputTextArea @bind-Value="this.RehydratedWeather.description" id="mydescription" class="form-control" 
                        aria-required="true"    />
         </div>
+        
     </EditForm>
 
     
@@ -129,7 +130,6 @@
     private List<CityAndZone> CitiesWithZones { get; set; } = new();
     private string? stateSelected { get; set; } = "";
     private PropertiesWeather? RehydratedWeather { get; set; } 
-    // private List<
 
     [SupplyParameterFromQuery]
     private string? StatesPassed { get; set; }
@@ -253,7 +253,7 @@
     private sealed class CityAndZone
     {
         public string City { get; set; }
-        public string Zone { get; set; } // does it have a city record?
+        public string Zone { get; set; } 
 
     }
 
@@ -261,7 +261,7 @@
     {
         public string type { get; set; }
         public FeaturesWeather[] features { get; set; }
-        public string title { get; set; }//: "Current watches, warnings, and advisories for West Side of Fresno and Kings Counties (CAZ305) CA",
+        public string title { get; set; }
         public string updated { get; set; }
     }
 
@@ -270,7 +270,7 @@
 
         public string? id { get; set; }
         public string? type { get; set; }
-        public string? geometry { get; set; }//: "Current watches, warnings, and advisories for West Side of Fresno and Kings Counties (CAZ305) CA",
+        public string? geometry { get; set; }
         public PropertiesWeather? properties { get; set; }
     }
 
@@ -279,7 +279,7 @@
 
         public string? severity { get; set; }
         public string? Event { get; set; }
-        public string? headline { get; set; }//: "Current watches, warnings, and advisories for West Side of Fresno and Kings Counties (CAZ305) CA",
+        public string? headline { get; set; }
         public string? description { get; set; }
     }
 }
