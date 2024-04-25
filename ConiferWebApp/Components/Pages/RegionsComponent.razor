@@ -75,9 +75,7 @@
 
     private string statesSelected { get; set; }
 
-    // [Inject]
-    // public IZone? GetZonesService { get; set; }
-
+    
 
     List<StateAbbreviationLinq> RegionsAndStateAbbreviations { get; set; } = new();
 
@@ -129,9 +127,8 @@
         if (this.statesSelected != "Select a region")
         {
             // A call to the server was already made
-            //using System.Net.Http.Headers;
             
-            
+            // no need to call this because it has already been called
             // await this.GetZonesService.GetZones();
 
             NavigationManager.NavigateTo($"AlertsComponent?StatesPassed={this.statesSelected}");

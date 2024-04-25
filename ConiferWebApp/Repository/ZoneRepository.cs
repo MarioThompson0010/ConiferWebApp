@@ -15,6 +15,7 @@ namespace ConiferWebApp.Repository
 
         public async Task<IEnumerable<MyZone>> GetMyZones()
         {
+            // normally you might have something like this
             //string storedProc = $"exec GetClientSP " + $"@Email='{email.Email}'";
             List<MyZone> myZone = new List<MyZone>();
 

@@ -18,6 +18,13 @@
 @attribute [StreamRendering]
 
 <h3>Select a state</h3>
+
+<div>
+    <h6>
+        @this.ErrorMessage
+    </h6>
+</div>
+
 @if (this.StateWithCities != null)
 {
     <div class="row">
@@ -60,7 +67,6 @@
 @if (this.RehydratedWeather != null)
 {
     <EditForm Model="this.RehydratedWeather" FormName="RehydratedForm">
-        <DataAnnotationsValidator />
         <div class="form-floating mb-3">
             <InputText @bind-Value="this.RehydratedWeather.Event" id="myevent" class="form-control" 
                        aria-required="true" placeholder="Event" />
@@ -79,12 +85,20 @@
             <label for="myheadline" class="form-label">Headline</label>
         </div>
         <div class="form-floating mb-3">
-            <InputText @bind-Value="this.RehydratedWeather.description" id="mydescription" class="form-control" 
-                       aria-required="true" placeholder="Description" />
-            <label for="mydescription" class="form-label">Description</label>
+            <InputTextArea @bind-Value="this.RehydratedWeather.description" id="mydescription" class="form-control" 
+                       aria-required="true"    />
+            @* <label for="mydescription" class="form-label">Description</label> *@
         </div>
     </EditForm>
+
+    
 }
+
+<div>
+    <h6>
+        @this.ErrorMessage
+    </h6>
+</div>
 
 @code {
     private string ErrorMessage { get; set; } = "";
@@ -209,13 +223,13 @@
                     if (rehydrated != null && rehydrated.features != null && rehydrated.features.Length > 0)
                     {
                         this.RehydratedWeather = rehydrated.features[0].properties;
-                        this.StateHasChanged(); 
                     }
                     else
                     {
                         this.ErrorMessage = "No Alerts for this zone";
                     }
-                    // populate screen
+
+                    this.StateHasChanged();
 
                 }
                 catch (Exception)

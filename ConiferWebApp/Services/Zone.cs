@@ -15,8 +15,7 @@ namespace ConiferWebApp.Services
             {
                 var response =  _httpClient.GetFromJsonAsync<MyZone[]>($"api/Zone").Result;
 
-                this.Zones = response.ToList();//.ToList();
-                //this.Zones = new List<MyZone>();
+                this.Zones = response.ToList();
             }
         }
 

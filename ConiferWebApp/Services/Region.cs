@@ -11,28 +11,19 @@ namespace ConiferWebApp.Services
         public Region(HttpClient httpClient)
         {
             this._httpClient = httpClient;
-            this.Regions = FileOpenRegions();// new List<MyRegion>();
+
+            var response =  _httpClient.GetFromJsonAsync<MyRegion[]>($"api/Region").Result;
+
+            this.Regions = response.ToList();
+
+
+            //this.Regions = FileOpenRegions();
         }
 
         public async Task<List<MyRegion>> GetRegions()
         {
              return this.Regions;
-            //GetClientSp getClientSp = new GetClientSp() { Email = email };
-            //var response = await _httpClient.PostAsJsonAsync<GetClientSp>($"api/GetClient", getClientSp);
-            //MyClient myClient = new MyClient();
-            //try
-            //{
-            //    var temp = await response.Content.ReadFromJsonAsync<List<MyClient>>();
-            //    myClient = temp.FirstOrDefault();
-            //}
-            //catch (Exception ex)
-            //{
-            //    var temp = ex.Message;
-
-            //}
-
-            //return myClient;
-            //return null;
+            
         }
 
         private List<MyRegion> FileOpenRegions()

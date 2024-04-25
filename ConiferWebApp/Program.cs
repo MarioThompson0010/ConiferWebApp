@@ -17,6 +17,7 @@ builder.Services.AddRazorComponents()
 
 //////////////////////
 builder.Services.AddScoped<IZoneRepository, ZoneRepository>();
+builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<IRegion, Region>();
