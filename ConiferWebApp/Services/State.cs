@@ -11,37 +11,21 @@ namespace ConiferWebApp.Services
         public State(HttpClient httpClient)
         {
             this._httpClient = httpClient;
-            this.States = this.FileOpenStates();// new List<MyState>();
+
+
+            var response = _httpClient.GetFromJsonAsync<MyState[]>($"api/State").Result;
+
+            this.States = response.ToList();
+
         }
 
         public async Task<List<MyState>> GetStates()
         {
             return this.States;
-            //GetClientSp getClientSp = new GetClientSp() { Email = email };
-            //var response = await _httpClient.PostAsJsonAsync<GetClientSp>($"api/GetClient", getClientSp);
-            //MyClient myClient = new MyClient();
-            //try
-            //{
-            //    var temp = await response.Content.ReadFromJsonAsync<List<MyClient>>();
-            //    myClient = temp.FirstOrDefault();
-            //}
-            //catch (Exception ex)
-            //{
-            //    var temp = ex.Message;
-
-            //}
-
-            //return myClient;
-            //return null;
+            
         }
 
-        private List<MyState> FileOpenStates()
-        {
-            var json = File.ReadAllText("Components/Pages/states.json");
-            List<MyState> states = JsonConvert.DeserializeObject<List<MyState>>(json);
-
-            return states;
-        }
+        
 
     }
 }

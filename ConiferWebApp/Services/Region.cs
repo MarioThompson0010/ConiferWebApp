@@ -17,7 +17,7 @@ namespace ConiferWebApp.Services
             this.Regions = response.ToList();
 
 
-            //this.Regions = FileOpenRegions();
+            
         }
 
         public async Task<List<MyRegion>> GetRegions()

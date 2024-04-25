@@ -83,8 +83,8 @@
     protected override async Task OnInitializedAsync()
     {
         // read region file
-        this.Regions =  this.GetRegionsService.GetRegions().Result;// this.FileOpenRegions();
-        this.States = this.GetStatesService.GetStates().Result;// this.FileOpenStates();
+        this.Regions =  this.GetRegionsService.GetRegions().Result;
+        this.States = this.GetStatesService.GetStates().Result;
 
         var stateabbr =
            (from reg in this.Regions

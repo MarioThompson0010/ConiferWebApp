@@ -25,7 +25,6 @@ namespace ConiferWebApp.Data
         {
             builder.Entity<MyZone>(entity => {
                 entity.HasNoKey();
-                //entity.ToTable("MyZone");
             });
 
             base.OnModelCreating(builder);

@@ -84,10 +84,12 @@
                        aria-required="true" placeholder="headline" />
             <label for="myheadline" class="form-label">Headline</label>
         </div>
+        <div>
+            <label>Description</label>
+        </div>
         <div class="form-floating mb-3">
             <InputTextArea @bind-Value="this.RehydratedWeather.description" id="mydescription" class="form-control" 
                        aria-required="true"    />
-            @* <label for="mydescription" class="form-label">Description</label> *@
         </div>
     </EditForm>
 
@@ -196,6 +198,7 @@
 
     private async void SelectedZone(string args)
     {
+        this.ErrorMessage = "";
 
         if (this.stateSelected != "Select a state")
         {
@@ -205,11 +208,9 @@
                 {
                     Method = HttpMethod.Get,
                     RequestUri = new Uri($"https://api.weather.gov/alerts/active/zone/{args}"),
-                    // RequestUri = new Uri($"https://national-weather-service.p.rapidapi.com/alerts/active/zone/{args}"),
                     Headers =
     {
-        // { "X-RapidAPI-Key", "a2b5d3b684mshabbf5412b1d3507p11b0a1jsnd2cd92016a40" },
-        // { "X-RapidAPI-Host", "national-weather-service.p.rapidapi.com" },
+        
         { "User-Agent", "MarioThompsonmariothompson0010"}
     },
                 };
@@ -227,6 +228,7 @@
                     else
                     {
                         this.ErrorMessage = "No Alerts for this zone";
+                        this.RehydratedWeather = null;
                     }
 
                     this.StateHasChanged();
