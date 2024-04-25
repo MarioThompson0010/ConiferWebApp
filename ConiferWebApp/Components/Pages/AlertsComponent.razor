@@ -17,7 +17,7 @@
 
 @attribute [StreamRendering]
 
-<h3>Alerts Component</h3>
+<h3>Select a state</h3>
 @if (this.StateWithCities != null)
 {
     <div class="row">
@@ -46,7 +46,7 @@
             @foreach (var zone in this.CitiesWithZones)
             {
                 <p>
-                    <button class="btn btn-primary" @onclick="SelectedZone">
+                    <button class="btn btn-primary" @onclick="() => SelectedZone(zone.Zone)">
                         @zone.City @zone.Zone
                     </button>
                 </p>
@@ -57,7 +57,37 @@
     </div>
 }
 
+@if (this.RehydratedWeather != null)
+{
+    <EditForm Model="this.RehydratedWeather" FormName="RehydratedForm">
+        <DataAnnotationsValidator />
+        <div class="form-floating mb-3">
+            <InputText @bind-Value="this.RehydratedWeather.Event" id="myevent" class="form-control" 
+                       aria-required="true" placeholder="Event" />
+            <label for="myevent" class="form-label">Event</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <InputText @bind-Value="this.RehydratedWeather.severity" id="myseverity" class="form-control" 
+                       aria-required="true" placeholder="Severity" />
+            <label for="myseverity" class="form-label">Severity</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <InputText @bind-Value="this.RehydratedWeather.headline" id="myheadline" class="form-control" 
+                       aria-required="true" placeholder="headline" />
+            <label for="myheadline" class="form-label">Headline</label>
+        </div>
+        <div class="form-floating mb-3">
+            <InputText @bind-Value="this.RehydratedWeather.description" id="mydescription" class="form-control" 
+                       aria-required="true" placeholder="Description" />
+            <label for="mydescription" class="form-label">Description</label>
+        </div>
+    </EditForm>
+}
+
 @code {
+    private string ErrorMessage { get; set; } = "";
 
     [Inject]
     public IRegion? GetRegionsService { get; set; }
@@ -82,6 +112,8 @@
     private List<StateWithCity> StateWithCities { get; set; } = new();
     private List<CityAndZone> CitiesWithZones { get; set; } = new();
     private string? stateSelected { get; set; } = "";
+    private PropertiesWeather? RehydratedWeather { get; set; } 
+    // private List<
 
     [SupplyParameterFromQuery]
     private string? StatesPassed { get; set; }
@@ -134,9 +166,9 @@
                     var gotcity = city.Key;
                     if (gotcity != null)
                     {
-                        CityAndZone cityAndZone = new CityAndZone();
                         foreach (var zone in city)
                         {
+                            CityAndZone cityAndZone = new CityAndZone();
                             cityAndZone.City = gotcity;
                             cityAndZone.Zone = zone.Zone;
                             this.CitiesWithZones.Add(cityAndZone);
@@ -148,11 +180,51 @@
         }
     }
 
-    private void SelectedZone(MouseEventArgs e)
+    private async void SelectedZone(string args)
     {
+
         if (this.stateSelected != "Select a state")
         {
             // call API
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri($"https://api.weather.gov/alerts/active/zone/{args}"),
+                    // RequestUri = new Uri($"https://national-weather-service.p.rapidapi.com/alerts/active/zone/{args}"),
+                    Headers =
+    {
+        // { "X-RapidAPI-Key", "a2b5d3b684mshabbf5412b1d3507p11b0a1jsnd2cd92016a40" },
+        // { "X-RapidAPI-Host", "national-weather-service.p.rapidapi.com" },
+        { "User-Agent", "MarioThompsonmariothompson0010"}
+    },
+                };
+            using (var response = await client.SendAsync(request))
+            {
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                    var body = await response.Content.ReadAsStringAsync();
+                    var rehydrated = JsonConvert.DeserializeObject<WeatherAPI>(body);
+                    if (rehydrated != null && rehydrated.features != null && rehydrated.features.Length > 0)
+                    {
+                        this.RehydratedWeather = rehydrated.features[0].properties;
+                        this.StateHasChanged(); 
+                    }
+                    else
+                    {
+                        this.ErrorMessage = "No Alerts for this zone";
+                    }
+                    // populate screen
+
+                }
+                catch (Exception)
+                {
+                    this.ErrorMessage = $"Could not retrieve data from API";
+
+                }
+            }
+
         }
     }
 
@@ -166,5 +238,32 @@
     {
         public string City { get; set; }
         public string Zone { get; set; } // does it have a city record?
+
+    }
+
+    private class WeatherAPI
+    {
+        public string type { get; set; }
+        public FeaturesWeather[] features { get; set; }
+        public string title { get; set; }//: "Current watches, warnings, and advisories for West Side of Fresno and Kings Counties (CAZ305) CA",
+        public string updated { get; set; }
+    }
+
+    private class FeaturesWeather
+    {
+
+        public string? id { get; set; }
+        public string? type { get; set; }
+        public string? geometry { get; set; }//: "Current watches, warnings, and advisories for West Side of Fresno and Kings Counties (CAZ305) CA",
+        public PropertiesWeather? properties { get; set; }
+    }
+
+    private class PropertiesWeather
+    {
+
+        public string? severity { get; set; }
+        public string? Event { get; set; }
+        public string? headline { get; set; }//: "Current watches, warnings, and advisories for West Side of Fresno and Kings Counties (CAZ305) CA",
+        public string? description { get; set; }
     }
 }

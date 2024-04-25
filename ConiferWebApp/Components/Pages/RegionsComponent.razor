@@ -27,7 +27,7 @@
 @if (this.RegionsAndStateAbbreviations != null && this.RegionsAndStateAbbreviations.Count > 0)
 {
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <select class="form-control" onchange="@RegionClicked">
                 <option value="Select a region">
                     Select a region
@@ -44,7 +44,7 @@
     </div>
     <p></p>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <button type="button" class="w-100 btn btn-lg btn-danger" @onclick="HandleAlerts">
                 Alerts
             </button>
@@ -128,6 +128,10 @@
     {
         if (this.statesSelected != "Select a region")
         {
+            // A call to the server was already made
+            //using System.Net.Http.Headers;
+            
+            
             // await this.GetZonesService.GetZones();
 
             NavigationManager.NavigateTo($"AlertsComponent?StatesPassed={this.statesSelected}");
