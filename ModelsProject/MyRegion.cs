@@ -1,0 +1,8 @@
+﻿namespace ModelsProject
+{
+    public class MyRegion
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}
