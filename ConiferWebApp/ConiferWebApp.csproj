@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ModelsProject\ModelsProject.csproj" />
     <ProjectReference Include="..\ConiferWebApp.Client\ConiferWebApp.Client.csproj" />
+    <ProjectReference Include="..\ModelsProject\ModelsProject.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

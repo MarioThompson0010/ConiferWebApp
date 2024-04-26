@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConiferWebApp", "ConiferWebApp\ConiferWebApp.csproj", "{E8DE1E95-045C-4898-A065-05E087F98B8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConiferWebApp", "ConiferWebApp\ConiferWebApp.csproj", "{E8DE1E95-045C-4898-A065-05E087F98B8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConiferWebApp.Client", "ConiferWebApp.Client\ConiferWebApp.Client.csproj", "{05778E47-C614-4C6E-9687-96A1D854CBDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConiferWebApp.Client", "ConiferWebApp.Client\ConiferWebApp.Client.csproj", "{05778E47-C614-4C6E-9687-96A1D854CBDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelsProject", "..\ModelsProject\ModelsProject.csproj", "{83DBF083-0D7E-4906-9BB9-DD1A52667381}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelsProject", "ModelsProject\ModelsProject.csproj", "{27840370-DDBE-4A2E-BA1A-2ABDB8DD0452}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{05778E47-C614-4C6E-9687-96A1D854CBDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05778E47-C614-4C6E-9687-96A1D854CBDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05778E47-C614-4C6E-9687-96A1D854CBDC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83DBF083-0D7E-4906-9BB9-DD1A52667381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83DBF083-0D7E-4906-9BB9-DD1A52667381}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83DBF083-0D7E-4906-9BB9-DD1A52667381}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83DBF083-0D7E-4906-9BB9-DD1A52667381}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27840370-DDBE-4A2E-BA1A-2ABDB8DD0452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27840370-DDBE-4A2E-BA1A-2ABDB8DD0452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27840370-DDBE-4A2E-BA1A-2ABDB8DD0452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27840370-DDBE-4A2E-BA1A-2ABDB8DD0452}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
