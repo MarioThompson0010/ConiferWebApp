@@ -183,6 +183,8 @@
     {
         this.CitiesWithZones.Clear();
         this.GroupingLabel = "";
+        this.RehydratedWeather = null;
+        this.ErrorMessage = "";
 
         this.stateSelected = args.Value.ToString();
         var foundZones = this.Zones.Where(w => w.State.Trim().ToUpper() == stateSelected.Trim().ToUpper())?.ToList();
@@ -214,6 +216,7 @@
     private async void SelectedZone(string args)
     {
         this.ErrorMessage = "";
+        this.RehydratedWeather = null;
 
         if (this.stateSelected != "Select a state")
         {
