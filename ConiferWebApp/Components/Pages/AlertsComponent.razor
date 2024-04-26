@@ -46,17 +46,30 @@
     </div>
 }
 <p></p>
-@if (this.CitiesWithZones != null)
+@if (this.CitiesWithZones != null && this.CitiesWithZones.Count > 0)
 {
     <div class="row">
         <div class="col-md-4">
+
+            @* this.GroupingLabel = @this.CitiesWithZones.FirstOrDefault()!.City; *@
+
+            @* <label>@this.GroupingLabel</label> *@
             @foreach (var zone in this.CitiesWithZones)
             {
+                @if (zone.City.ToUpper().Trim() != this.GroupingLabel.ToUpper().Trim())
+                {
+                    this.GroupingLabel = zone.City;
+                    <label>@this.GroupingLabel</label>
+                }
                 <p>
                     <button class="btn btn-primary" @onclick="() => SelectedZone(zone.Zone)">
                         @zone.City @zone.Zone
                     </button>
                 </p>
+
+                this.GroupingLabel = zone.City;
+
+
             }
 
         </div>
@@ -68,19 +81,19 @@
 {
     <EditForm Model="this.RehydratedWeather" FormName="RehydratedForm">
         <div class="form-floating mb-3">
-            <InputText @bind-Value="this.RehydratedWeather.Event" id="myevent" class="form-control" 
+            <InputText @bind-Value="this.RehydratedWeather.Event" id="myevent" class="form-control"
                        aria-required="true" placeholder="Event" />
             <label for="myevent" class="form-label">Event</label>
         </div>
 
         <div class="form-floating mb-3">
-            <InputText @bind-Value="this.RehydratedWeather.severity" id="myseverity" class="form-control" 
+            <InputText @bind-Value="this.RehydratedWeather.severity" id="myseverity" class="form-control"
                        aria-required="true" placeholder="Severity" />
             <label for="myseverity" class="form-label">Severity</label>
         </div>
 
         <div class="form-floating mb-3">
-            <InputText @bind-Value="this.RehydratedWeather.headline" id="myheadline" class="form-control" 
+            <InputText @bind-Value="this.RehydratedWeather.headline" id="myheadline" class="form-control"
                        aria-required="true" placeholder="headline" />
             <label for="myheadline" class="form-label">Headline</label>
         </div>
@@ -88,13 +101,13 @@
             <label>Description</label>
         </div>
         <div class="form-floating mb-3">
-            <InputTextArea @bind-Value="this.RehydratedWeather.description" id="mydescription" class="form-control" 
-                       aria-required="true"    />
+            <InputTextArea @bind-Value="this.RehydratedWeather.description" id="mydescription" class="form-control"
+                           aria-required="true" />
         </div>
-        
+
     </EditForm>
 
-    
+
 }
 
 <div>
@@ -129,7 +142,8 @@
     private List<StateWithCity> StateWithCities { get; set; } = new();
     private List<CityAndZone> CitiesWithZones { get; set; } = new();
     private string? stateSelected { get; set; } = "";
-    private PropertiesWeather? RehydratedWeather { get; set; } 
+    private PropertiesWeather? RehydratedWeather { get; set; }
+    private string GroupingLabel { get; set; } = "";
 
     [SupplyParameterFromQuery]
     private string? StatesPassed { get; set; }
@@ -169,6 +183,7 @@
 
     private void StateClicked(ChangeEventArgs args)
     {
+        this.CitiesWithZones.Clear();
         this.stateSelected = args.Value.ToString();
         var foundZones = this.Zones.Where(w => w.State.Trim().ToUpper() == stateSelected.Trim().ToUpper())?.ToList();
 
@@ -210,7 +225,7 @@
                     RequestUri = new Uri($"https://api.weather.gov/alerts/active/zone/{args}"),
                     Headers =
     {
-        
+
         { "User-Agent", "MarioThompsonmariothompson0010"}
     },
                 };
@@ -253,7 +268,7 @@
     private sealed class CityAndZone
     {
         public string City { get; set; }
-        public string Zone { get; set; } 
+        public string Zone { get; set; }
 
     }
 
