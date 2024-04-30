@@ -8,14 +8,19 @@ namespace ConiferWebApp.Services
         private readonly HttpClient _httpClient;
         public List<MyZone> Zones { get; set; }
 
-        public Zone(HttpClient httpClient)
+        public Zone(HttpClient httpClient, List<MyZone> zones)
         {
             this._httpClient = httpClient;
-            if (this.Zones == null)
+            if (zones.Count < 1)
             {
                 var response =  _httpClient.GetFromJsonAsync<MyZone[]>($"api/Zone").Result;
 
                 this.Zones = response.ToList();
+                zones.AddRange(this.Zones);
+            }
+            else
+            {
+                this.Zones = zones;
             }
         }
 

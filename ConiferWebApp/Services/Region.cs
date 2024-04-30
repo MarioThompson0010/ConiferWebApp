@@ -8,13 +8,22 @@ namespace ConiferWebApp.Services
     {
         private readonly HttpClient _httpClient;
         public List<MyRegion> Regions { get; set; }
-        public Region(HttpClient httpClient)
+
+        public Region(HttpClient httpClient, List<MyRegion> region)
         {
             this._httpClient = httpClient;
+            //this.region = region;
+            if (region.Count < 1)
+            {
+                var response = _httpClient.GetFromJsonAsync<MyRegion[]>($"api/Region").Result;
+                this.Regions = response.ToList();
+                region.AddRange(this.Regions);// = this.Regions;
+            }
+            else
+            {
+                this.Regions = region;
+            }
 
-            var response =  _httpClient.GetFromJsonAsync<MyRegion[]>($"api/Region").Result;
-
-            this.Regions = response.ToList();
 
 
             

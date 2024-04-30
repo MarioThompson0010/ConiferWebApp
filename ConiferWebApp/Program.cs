@@ -21,9 +21,9 @@ builder.Services.AddScoped<IStateRepository, StateRepository>();
 
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<IRegion, Region>();
-builder.Services.AddSingleton<IState, State>();
-builder.Services.AddSingleton<IZone, Zone>();
+builder.Services.AddSingleton<List<MyRegion>>();
+builder.Services.AddSingleton<List<MyState>>();
+builder.Services.AddSingleton<List<MyZone>>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(
     //options =>
