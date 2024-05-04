@@ -49,22 +49,23 @@
 @if (this.CitiesWithZones != null && this.CitiesWithZones.Count > 0)
 {
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
 
-            
+
             @foreach (var zone in this.CitiesWithZones)
             {
                 @if (zone.City.ToUpper().Trim() != this.GroupingLabel.ToUpper().Trim())
                 {
                     this.GroupingLabel = zone.City;
-                    <label>@this.GroupingLabel</label>
+                    <div class="row my-2">
+                    </div>
+                    <label class="mx-1">@this.GroupingLabel</label>
+                    
                 }
-                <p>
-                    <button class="btn btn-primary" @onclick="() => SelectedZone(zone.Zone)">
+
+                    <button class="btn btn-primary mt-1 mx-1" @onclick="() => SelectedZone(zone.Zone)">
                         @zone.City @zone.Zone
                     </button>
-                </p>
-
                 this.GroupingLabel = zone.City;
 
 
